@@ -3,7 +3,7 @@ name = "template-package"
 version = "0.1.0"
 description = "A GenAI application template - rename this when using the template"
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.13"
 authors = [
     { name = "Your Name", email = "your.email@example.com" }
 ]
@@ -65,7 +65,7 @@ build-backend = "hatchling.build"
 
 # Ruff configuration
 [tool.ruff]
-target-version = "py310"
+target-version = "py313"
 line-length = 100
 
 [tool.ruff.lint]
@@ -96,7 +96,7 @@ indent-style = "space"
 
 # MyPy configuration
 [tool.mypy]
-python_version = "3.10"
+python_version = "3.13"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = false  # Set to true for stricter checking
@@ -151,3 +151,37 @@ exclude_lines = [
     "if TYPE_CHECKING:",
     "@abstractmethod",
 ]
+
+# UV Scripts - Task runner shortcuts
+[tool.uv]
+[tool.uv.scripts]
+# Testing
+test = "pytest"
+test-cov = "pytest --cov --cov-report=term-missing --cov-report=html"
+test-verbose = "pytest -v"
+test-unit = "pytest -m unit"
+test-integration = "pytest -m integration"
+test-fast = "pytest -m 'not slow'"
+
+# Code quality
+lint = "ruff check ."
+lint-fix = "ruff check --fix ."
+format = "ruff format ."
+format-check = "ruff format --check ."
+type-check = "mypy src/"
+
+# Combined checks
+check = { chain = ["lint", "format-check", "type-check"] }
+fix = { chain = ["lint-fix", "format"] }
+
+# Pre-commit
+pre-commit-install = "pre-commit install"
+pre-commit-run = "pre-commit run --all-files"
+pre-commit-update = "pre-commit autoupdate"
+
+# Utilities
+clean = "python -c \"import shutil; import pathlib; [shutil.rmtree(p, ignore_errors=True) for p in pathlib.Path('.').rglob('__pycache__')]; [shutil.rmtree(p, ignore_errors=True) for p in ['.pytest_cache', '.mypy_cache', '.ruff_cache', 'htmlcov', 'dist', 'build']]; [p.unlink(missing_ok=True) for p in pathlib.Path('.').rglob('*.pyc')]; print('✓ Cleanup complete!')\""
+
+# Development
+install-dev = "uv pip install -e \".[dev]\""
+install-all = "uv pip install -e \".[dev,genai,vector,database,web]\""

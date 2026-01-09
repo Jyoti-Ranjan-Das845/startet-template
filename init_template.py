@@ -252,9 +252,10 @@ def main() -> int:
         print("=" * 60)
         print()
         print("Next steps:")
-        print("  1. Run: just setup")
-        print("  2. Copy .env.example to .env and add your API keys")
-        print("  3. Start building your GenAI application!")
+        print("  1. Run: uv venv && uv pip install -e '.[dev]'")
+        print("  2. Run: uv run pre-commit-install")
+        print("  3. Copy .env.example to .env and add your API keys")
+        print("  4. Start building your GenAI application!")
         print()
 
         # Remove this script

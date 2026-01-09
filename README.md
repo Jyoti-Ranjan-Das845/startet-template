@@ -4,12 +4,12 @@ A production-ready template for building GenAI applications with modern Python t
 
 ## Features
 
-- **UV** - Fast, reliable Python package manager
+- **UV** - Fast, reliable Python package manager with built-in task runner
 - **Ruff** - Lightning-fast linting and formatting
 - **pytest** - Comprehensive testing with coverage
 - **mypy** - Static type checking
 - **Pre-commit hooks** - Automated code quality checks
-- **Just** - Command runner for common development tasks
+- **UV Scripts** - Convenient shortcuts for common development tasks
 - **Claude Code ready** - Pre-configured permissions for AI-assisted development
 - **Flexible structure** - Adapt to any project layout
 - **Environment management** - Secure configuration handling
@@ -49,10 +49,14 @@ mv src/template_package src/my_project_name
 rm -rf .git
 git init
 
-# 5. Run setup
-just setup
+# 5. Install dependencies
+uv venv
+uv pip install -e ".[dev]"
 
-# 6. Create your first commit
+# 6. Setup pre-commit hooks
+uv run pre-commit-install
+
+# 7. Create your first commit
 git add .
 git commit -m "Initial commit"
 ```
@@ -69,9 +73,8 @@ git commit -m "Initial commit"
 
 ### Prerequisites
 
-- Python 3.10 or higher
+- Python 3.13 or higher
 - UV package manager
-- Just command runner (optional but recommended)
 
 ### Install Required Tools
 
@@ -90,55 +93,9 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 pip install uv
 ```
 
-#### Install Just (Optional but Recommended)
-
-Just is a command runner that makes development tasks easier:
-
-```bash
-# macOS
-brew install just
-
-# Linux
-cargo install just
-# or
-wget -qO - 'https://proget.makedeb.org/debian-feeds/prebuilt-mpr.pub' | gpg --dearmor | sudo tee /usr/share/keyrings/prebuilt-mpr-archive-keyring.gpg 1> /dev/null
-echo "deb [arch=all,$(dpkg --print-architecture) signed-by=/usr/share/keyrings/prebuilt-mpr-archive-keyring.gpg] https://proget.makedeb.org prebuilt-mpr $(lsb_release -cs)" | sudo tee /etc/apt/sources.list.d/prebuilt-mpr.list
-sudo apt update
-sudo apt install just
-
-# Windows (with Scoop)
-scoop install just
-
-# Or download from: https://github.com/casey/just/releases
-```
-
-See all available commands: `just --list`
-
 ### Project Setup
 
-#### Option A: Using Just (Recommended)
-
-```bash
-# First-time setup (creates venv, installs dev deps, sets up pre-commit)
-just setup
-
-# Activate virtual environment
-source .venv/bin/activate  # macOS/Linux
-.venv\Scripts\activate     # Windows
-
-# Copy and edit environment file
-cp .env.example .env
-# Edit .env with your API keys
-
-# Validate setup
-just validate
-```
-
-#### Option B: Manual Setup
-
-1. **Clone/use this template** and navigate to the directory
-
-2. **Create a virtual environment and install dependencies:**
+1. **Create a virtual environment and install dependencies:**
 
    ```bash
    # Create virtual environment with UV
@@ -197,42 +154,40 @@ just validate
 
 ## Development Workflow
 
-### Using Just Commands (Recommended)
+### Using UV Scripts (Recommended)
 
-Just provides convenient shortcuts for all common tasks:
+UV provides convenient shortcuts via `uv run` for all common tasks:
 
 ```bash
-# Show all available commands
-just --list
-
 # Code quality
-just lint              # Run linter
-just lint-fix          # Run linter with auto-fix
-just format            # Format code
-just type-check        # Run type checking
-just check             # Run ALL checks (lint + format + type)
-just fix               # Auto-fix all issues
+uv run lint              # Run linter
+uv run lint-fix          # Run linter with auto-fix
+uv run format            # Format code
+uv run type-check        # Run type checking
+uv run check             # Run ALL checks (lint + format + type)
+uv run fix               # Auto-fix all issues
 
 # Testing
-just test              # Run all tests
-just test-cov          # Run tests with coverage report
-just test-unit         # Run only unit tests
-just test-fast         # Skip slow tests
+uv run test              # Run all tests
+uv run test-cov          # Run tests with coverage report
+uv run test-unit         # Run only unit tests
+uv run test-fast         # Skip slow tests
 
-# Development
-just run               # Run the application
-just validate          # Validate environment setup
-just clean             # Clean cache files
+# Pre-commit
+uv run pre-commit-install  # Install pre-commit hooks
+uv run pre-commit-run      # Run pre-commit on all files
 
-# Setup & maintenance
-just install-dev       # Install dev dependencies
-just pre-commit        # Install pre-commit hooks
-just ci                # Run all CI checks locally
+# Utilities
+uv run clean             # Clean cache files
+
+# Setup
+uv run install-dev       # Install dev dependencies
+uv run install-all       # Install all optional dependencies
 ```
 
-### Manual Commands (Without Just)
+### Direct Commands
 
-If you prefer not to use Just, you can run commands directly:
+You can also run commands directly without UV scripts:
 
 #### Code Quality
 
@@ -294,8 +249,7 @@ This template provides a minimal structure. See [STRUCTURE_OPTIONS.md](STRUCTURE
 ├── src/                    # Your source code (flexible)
 ├── tests/                  # Test files
 ├── scripts/                # Utility scripts
-├── justfile                # Command runner tasks
-├── pyproject.toml          # Project configuration
+├── pyproject.toml          # Project configuration (includes UV scripts)
 ├── .env.example            # Environment variables template
 ├── .gitignore              # Git ignore rules
 └── README.md               # This file
@@ -377,7 +331,6 @@ This template comes pre-configured for Claude Code with optimized permissions:
 
 **Auto-approved commands:**
 - `uv`, `pytest`, `ruff`, `mypy` - Development tools
-- `just:test`, `just:lint`, `just:check`, etc. - Just recipes
 - `git:status`, `git:diff`, `git:add` - Git operations (read + staging)
 - `python:scripts/*` - Python execution in scripts/ only
 
@@ -398,23 +351,19 @@ The configuration is balanced for productivity while protecting sensitive data.
 
 ## Common Commands Reference
 
-### Quick Reference with Just
+### Quick Reference with UV
 
 ```bash
-# First time setup
-just setup                           # Complete project setup
-
 # Daily development
-just test                            # Run tests
-just check                           # Run all quality checks
-just fix                             # Auto-fix issues
-just run                             # Run application
+uv run test                          # Run tests
+uv run check                         # Run all quality checks
+uv run fix                           # Auto-fix issues
+uv run test-cov                      # Run tests with coverage
 
-# Full command list
-just --list                          # Show all available commands
+# See all available scripts in pyproject.toml [tool.uv.scripts] section
 ```
 
-### Detailed Commands (Manual)
+### Detailed Commands
 
 ```bash
 # Setup
@@ -450,7 +399,6 @@ pre-commit run --all-files          # Run manually
 
 - [UV Documentation](https://docs.astral.sh/uv/)
 - [Ruff Documentation](https://docs.astral.sh/ruff/)
-- [Just Documentation](https://just.systems/)
 - [pytest Documentation](https://docs.pytest.org/)
 - [mypy Documentation](https://mypy.readthedocs.io/)
 - [Pre-commit Documentation](https://pre-commit.com/)
