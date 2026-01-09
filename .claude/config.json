@@ -1,0 +1,86 @@
+{
+  "$schema": "https://claude.com/schemas/claude-config.json",
+  "version": "1.0",
+
+  "description": "Claude Code configuration for Python GenAI projects",
+
+  "allowedBashCommands": [
+    "uv",
+    "pytest",
+    "ruff",
+    "mypy",
+    "just:test",
+    "just:lint",
+    "just:check",
+    "just:fix",
+    "just:run",
+    "just:validate",
+    "just:clean",
+    "git:status",
+    "git:diff",
+    "git:log",
+    "git:add",
+    "python:scripts/*",
+    "ls",
+    "mkdir",
+    "chmod:+x"
+  ],
+
+  "autoApproveTools": [
+    "Read",
+    "Glob",
+    "Grep",
+    "Edit"
+  ],
+
+  "filePermissions": {
+    "allowedPaths": [
+      "src/**/*",
+      "tests/**/*",
+      "scripts/**/*",
+      "docs/**/*",
+      "*.md",
+      "*.py",
+      "*.toml",
+      "*.yaml",
+      "*.yml",
+      "*.json",
+      "justfile",
+      ".pre-commit-config.yaml",
+      ".gitignore"
+    ],
+    "deniedPaths": [
+      ".env",
+      ".env.*",
+      "secrets/**/*",
+      "*.key",
+      "*.pem",
+      "credentials.json",
+      ".aws/**/*",
+      ".ssh/**/*"
+    ],
+    "readOnlyPaths": [
+      "uv.lock",
+      ".git/**/*"
+    ]
+  },
+
+  "statusLine": {
+    "enabled": true,
+    "format": "GenAI Template | Python {{python_version}}"
+  },
+
+  "output": {
+    "style": "concise",
+    "showLineNumbers": true
+  },
+
+  "workingDirectory": ".",
+
+  "_comments": {
+    "allowedBashCommands": "Commands Claude can run without approval",
+    "autoApproveTools": "Claude Code tools that don't require approval",
+    "filePermissions": "File access controls - protects .env and secrets",
+    "customization": "See .claude/README.md and CLAUDE_PERMISSIONS.md for details"
+  }
+}

@@ -1,0 +1,153 @@
+[project]
+name = "my-genai-project"
+version = "0.1.0"
+description = "A GenAI application template"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "Your Name", email = "your.email@example.com" }
+]
+license = { text = "MIT" }
+
+# Core dependencies - add your GenAI frameworks here
+dependencies = [
+    "python-dotenv>=1.0.0",  # Environment variable management
+    "pydantic>=2.0.0",       # Data validation and settings
+    "pydantic-settings>=2.0.0",  # Settings management
+]
+
+[project.optional-dependencies]
+# Development dependencies
+dev = [
+    "ruff>=0.8.0",           # Linting and formatting
+    "mypy>=1.13.0",          # Type checking
+    "pytest>=8.0.0",         # Testing framework
+    "pytest-cov>=6.0.0",     # Coverage reporting
+    "pytest-asyncio>=0.24.0", # Async testing support
+    "pre-commit>=4.0.0",     # Pre-commit hooks
+]
+
+# Optional GenAI frameworks - uncomment as needed
+genai = [
+    # "langchain>=0.3.0",
+    # "langchain-community>=0.3.0",
+    # "langchain-openai>=0.2.0",
+    # "llama-index>=0.11.0",
+    # "openai>=1.0.0",
+    # "anthropic>=0.39.0",
+]
+
+# Optional vector databases - uncomment as needed
+vector = [
+    # "chromadb>=0.5.0",
+    # "pinecone-client>=5.0.0",
+    # "weaviate-client>=4.0.0",
+    # "qdrant-client>=1.11.0",
+]
+
+# Optional traditional databases - uncomment as needed
+database = [
+    # "sqlalchemy>=2.0.0",
+    # "psycopg2-binary>=2.9.0",  # PostgreSQL
+    # "redis>=5.0.0",
+]
+
+# API/Web frameworks - uncomment as needed
+web = [
+    # "fastapi>=0.115.0",
+    # "uvicorn[standard]>=0.32.0",
+    # "httpx>=0.28.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+# Ruff configuration
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+
+[tool.ruff.lint]
+# Enable recommended rules plus additional helpful ones
+select = [
+    "E",      # pycodestyle errors
+    "W",      # pycodestyle warnings
+    "F",      # pyflakes
+    "I",      # isort
+    "N",      # pep8-naming
+    "UP",     # pyupgrade
+    "B",      # flake8-bugbear
+    "C4",     # flake8-comprehensions
+    "SIM",    # flake8-simplify
+    "TCH",    # flake8-type-checking
+]
+ignore = [
+    "E501",   # line too long (handled by formatter)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]  # Allow unused imports in __init__.py
+"tests/**/*.py" = ["S101"] # Allow assertions in tests
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+
+# MyPy configuration
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false  # Set to true for stricter checking
+disallow_incomplete_defs = true
+check_untyped_defs = true
+no_implicit_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_no_return = true
+strict_equality = true
+
+[[tool.mypy.overrides]]
+module = "tests.*"
+disallow_untyped_defs = false
+
+# Pytest configuration
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = [
+    "--strict-markers",
+    "--strict-config",
+    "--cov=src",
+    "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-report=xml",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+]
+
+# Coverage configuration
+[tool.coverage.run]
+source = ["src"]
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/.venv/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+]
