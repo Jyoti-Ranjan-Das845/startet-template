@@ -1,7 +1,7 @@
 [project]
-name = "my-genai-project"
+name = "template-package"
 version = "0.1.0"
-description = "A GenAI application template"
+description = "A GenAI application template - rename this when using the template"
 readme = "README.md"
 requires-python = ">=3.10"
 authors = [

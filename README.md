@@ -14,6 +14,57 @@ A production-ready template for building GenAI applications with modern Python t
 - **Flexible structure** - Adapt to any project layout
 - **Environment management** - Secure configuration handling
 
+## Using This Template
+
+This repository is a ready-to-use template for starting new Python GenAI projects.
+
+### Option 1: Quick Start (Automated)
+
+```bash
+# Clone the template
+git clone https://github.com/Jyoti-Ranjan-Das845/startet-template.git my-new-project
+cd my-new-project
+
+# Run the initialization script (will ask for your project name)
+python init_template.py
+
+# Start building!
+```
+
+### Option 2: Manual Setup
+
+```bash
+# 1. Clone the template
+git clone https://github.com/Jyoti-Ranjan-Das845/startet-template.git my-new-project
+cd my-new-project
+
+# 2. Rename the package directory
+mv src/template_package src/my_project_name
+
+# 3. Update pyproject.toml
+# Change: name = "template-package"
+# To: name = "my-project-name"
+
+# 4. Remove old git history (optional, to start fresh)
+rm -rf .git
+git init
+
+# 5. Run setup
+just setup
+
+# 6. Create your first commit
+git add .
+git commit -m "Initial commit"
+```
+
+### Option 3: Use GitHub's "Use this template" Button
+
+1. Click the green "Use this template" button on GitHub
+2. Create your new repository
+3. Clone your new repository
+4. Run `python init_template.py` to customize
+5. Start coding!
+
 ## Quick Start
 
 ### Prerequisites
